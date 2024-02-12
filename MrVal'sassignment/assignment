@@ -1,0 +1,211 @@
+This is creating a user ‘altschool’ as my login. Since using sudo cmds returns error I decided to run it using the root user.
+ 
+Login user created: 
+
+vagrant@ubuntu-focal:~$ sudo adduser -c "Mr Val's Assignment" altschool
+adduser: `Mr Val's Assignment' does not exist. Using defaults.
+Adding user `altschool' ...
+Adding new group `altschool' (1005) ...
+Adding new user `altschool' (1005) with group `altschool' ...
+The home directory `/home/altschool' already exists.  Not copying from `/etc/skel'.
+New password:
+Retype new password:
+passwd: password updated successfully
+Changing the user information for altschool
+Enter the new value, or press ENTER for the default
+        Full Name []: Jonah R. E.
+        Room Number []: 001
+        Work Phone []: 08061597561
+        Home Phone []: 08061597561
+        Other []: Cloud Engineer with a difference.
+Is the information correct? [Y/n] Y
+vagrant@ubuntu-focal:~$ tail -n 5 /etc/passwd
+statd:x:114:65534::/var/lib/nfs:/usr/sbin/nologin
+mjegede:x:1002:1002::/home/mjegede:/bin/bash
+mabimbolai:x:1003:1003:Ms Abimbola I,0987645322,0980763292,8474848488,The HR Springhall Primaries:/home/mabimbolai:/bin/bash
+cynthia:x:1004:1004:Ms Cynthia Bank,003,08077665544,09033AD56ED,H.T Springhall Primary:/home/cynthia:/bin/bash
+altschool:x:1005:1005:Jonah R. E.,001,08061597561,08061597561,Cloud Engineer with a difference.:/home/altschool:/bin/bash
+vagrant@ubuntu-focal:~$
+
+
+ 
+
+View User Added
+
+vagrant@ubuntu-focal:~$ tail -n 2 /etc/passwd
+cynthia:x:1004:1004:Ms Cynthia Bank,003,08077665544,09033AD56ED,H.T:/home/cynthia:/bin/bash
+altschool:x:1005:1005:Jonah R. E.,001,08061597561,08061597561,Cloud Engineer with a difference.:/home/altschool:/bin/bash
+vagrant@ubuntu-focal:~$
+  
+
+Switching To Added user
+vagrant@ubuntu-focal:~$ su altschool
+Password:
+altschool@ubuntu-focal:/home/vagrant$ cd /
+altschool@ubuntu-focal:/$ cd
+altschool@ubuntu-focal:~$ pwd
+/home/altschool
+altschool@ubuntu-focal:~$
+
+ 
+Making Directories
+altschool@ubuntu-focal:~$ mkdir code tests personal misc
+altschool@ubuntu-focal:~$ ls
+code  misc  personal  tests
+altschool@ubuntu-focal:~$
+ 
+
+a.	Change directory to the tests directory using absolute pathname
+altschool@ubuntu-focal:~$ ls
+code  misc  personal  tests
+altschool@ubuntu-focal:~$ pwd
+/home/altschool
+altschool@ubuntu-focal:~$ cd /home/altschool/tests/
+altschool@ubuntu-focal:~/tests$
+
+ 
+
+b.	Change directory to the tests directory using relative pathname 
+altschool@ubuntu-focal:~$ cd /home/altschool/tests/
+altschool@ubuntu-focal:~/tests$ cd ..
+altschool@ubuntu-focal:~$
+
+ 
+
+c.	Use echo command to create a file named fileA with text content ‘Hello A’ in the misc directory
+altschool@ubuntu-focal:~/tests$ cd ..
+altschool@ubuntu-focal:~$ echo 'Hello A' > /home//altschool/misc/fileA
+altschool@ubuntu-focal:~$ ls -l /home//altschool/misc/fileA
+-rw-rw-r-- 1 altschool altschool 8 Feb 11 16:00 /home//altschool/misc/fileA
+altschool@ubuntu-focal:~$ cat /home//altschool/misc/fileA
+Hello A
+altschool@ubuntu-focal:~$
+
+ 
+
+ 
+
+d.	Create an empty file named fileB in the misc directory. Populate the file with a dummy content afterwards 
+altschool@ubuntu-focal:~$ echo > /home/altschool//misc/fileB
+altschool@ubuntu-focal:~$ ls misc
+fileA  fileB
+altschool@ubuntu-focal:~$
+
+
+ 
+
+Populate the file with a dummy content afterwards 
+altschool@ubuntu-focal:~$ vim /home/altschool//misc/fileB
+ 
+
+e.	Copy contents of fileA into fileC 
+altschool@ubuntu-focal:~$ cp /home/altschool/misc/fileA /home/altschool/misc/fileC
+altschool@ubuntu-focal:~$ cat /home/altschool/misc/fileC
+Hello A
+altschool@ubuntu-focal:~$
+
+ 
+
+f.	Move contents of fileB into fileD
+altschool@ubuntu-focal:~$ mv /home/altschool/misc/fileB /home/altschool/misc/fileD
+altschool@ubuntu-focal:~$ cat /home/altschool/misc/fileD
+s is a very dummy content just like the Lorem Ipsum
+Do not be carried away.
+altschool@ubuntu-focal:~$
+
+ 
+
+g.	Create a tar archive called misc.tar for the contents of misc directory
+altschool@ubuntu-focal:~$ tar -cvf misc.tar misc/
+misc/
+misc/fileA
+misc/fileD
+misc/fileC
+altschool@ubuntu-focal:~$
+
+ 
+
+h.	Compress the tar archive to create a misc.tar.gz file
+altschool@ubuntu-focal:~$ gzip misc.tar
+altschool@ubuntu-focal:~$ ls
+code  misc  misc.tar.gz  personal  tests
+altschool@ubuntu-focal:~$
+
+ 
+
+
+i.	Create a user and force the user to change his/her password upon login
+vagrant@ubuntu-focal:~$ sudo useradd jayGreat
+vagrant@ubuntu-focal:~$
+vagrant@ubuntu-focal:~$ sudo passwd --expire jayGreat
+passwd: password expiry information changed.
+vagrant@ubuntu-focal:~$
+
+vagrant@ubuntu-focal:~$ passwd jayGreat
+passwd: You may not view or modify password information for jayGreat.
+vagrant@ubuntu-focal:~$ sudo passwd jayGreat
+New password:
+Retype new password:
+passwd: password updated successfully
+vagrant@ubuntu-focal:~$
+
+ 
+
+j.	 Lock a users password
+altschool@ubuntu-focal:~$ sudo usermod -L jayGreat
+altschool@ubuntu-focal:~$ sudo tail -n 3 /etc/shadow
+altschool:$6$UBzeF.rXdGiN1C5s$266GBhjAILzKjPBpfnNzCcPD6UzvBIv8uMw.JnrPk7E0Vq0XsK
+seAc8vLAcNZf4NQXWgnp6LTGKECYLwN.G0e0:19764:0:99999:7:::
+jayGreat:!$6$Kz2Ad7Ue/JCyi2kO$N/bccXfJKjOmXdZZ7CcKvn3MkMVINn8cGWh5UBlino7rgfqqlP
+8j11ctJ50FGco46RA0xeq4CK0I98vN2ZKgR1:19764:0:99999:7:::
+joeB:!:19764:0:99999:7:::
+altschool@ubuntu-focal:~$ su jayGreat
+Password:
+su: Authentication failure
+altschool@ubuntu-focal:~$
+
+ 
+
+k.	 Create a user with no login shell
+altschool@ubuntu-focal:~$ sudo useradd -s /sbin/nologin joeB
+[sudo] password for altschool:
+altschool@ubuntu-focal:~$ tail -n 3 /etc/passwd
+altschool:x:1005:1005:Jonah R. E.,001,08061597561,08061597561,Cloud Engineer with a difference.:/home/altschool:/bin/bash
+jayGreat:x:1006:1006::/home/jayGreat:/bin/sh
+joeB:x:1007:1008::/home/joeB:/sbin/nologin
+altschool@ubuntu-focal:~$
+
+ 
+
+
+
+L - M  Disable password based authentication for ssh and Disable root login for ssh
+
+
+altschool@ubuntu-focal:~$ sudo vi /etc/ssh/sshd_config
+
+:set nu and locate the number where authentication is written and set it to no as below.
+#PermitRootLogin no
+And also passwordAuthentication no
+altschool@ubuntu-focal:~$ sudo vi /etc/passwd
+altschool@ubuntu-focal:~$ sudo service sshd restart
+altschool@ubuntu-focal:~$
+
+ 
+
+
+ 
+
+ 
+
+ 
+ 
+
+
+
+
+
+
+
+
+
